@@ -1,0 +1,1 @@
+include ':app', ':lib_xmlparser', ':lib_xmlparser_annotations', ':lib_xmlparser_compiler'
