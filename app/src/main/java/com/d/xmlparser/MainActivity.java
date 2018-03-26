@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.d.lib.xmlparser.XmlParser;
 import com.d.xmlparser.model.bean.Resp;
-import com.d.xmlparser.model.bean.Resp$$XmlBinder;
 
 public class MainActivity extends AppCompatActivity {
     private final String xmlResp = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><resp><code>35</code><desc>xml parser test</desc></resp>";
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void test() {
-        Resp resp = new Resp$$XmlBinder().parserXml(xmlResp);
+        Resp resp = XmlParser.parserInvoke(Resp.class, xmlResp);
         Log.d("dsiner", "---------");
     }
 }

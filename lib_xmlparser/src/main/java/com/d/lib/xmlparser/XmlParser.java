@@ -18,7 +18,7 @@ public class XmlParser {
     private static final String TAG = "XmlParser";
 
     public static <T> T parserInvoke(Class<T> targetClass, String xml) {
-        T result = null;
+        T result;
         if (debug) Log.d("XmlParser", "Looking up binding for " + targetClass.getName());
         String clsName = targetClass.getName();
         if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
@@ -36,7 +36,7 @@ public class XmlParser {
         return null;
     }
 
-    public static <T> T parser(Class<T> targetClass, String xml) {
+    public static <T, P extends AbsXmlParser> T parser(Class<T> targetClass, String xml) {
         if (debug) Log.d("XmlParser", "Looking up binding for " + targetClass.getName());
         Constructor<?> constructor = findBindingConstructorForClass(targetClass);
         if (constructor == null) {
@@ -44,9 +44,9 @@ public class XmlParser {
         }
         //noinspection TryWithIdenticalCatches Resolves to API 19+ only type.
         try {
-            Object obj = constructor.newInstance();
+            P obj = (P) constructor.newInstance();
             if (obj instanceof AbsXmlParser) {
-                return (T) ((AbsXmlParser) obj).parserXml(xml);
+                return (T) ((P) obj).parserXml(xml);
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Unable to invoke " + constructor, e);

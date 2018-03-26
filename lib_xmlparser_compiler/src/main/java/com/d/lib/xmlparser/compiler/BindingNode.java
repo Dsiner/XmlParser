@@ -64,8 +64,7 @@ public class BindingNode {
         TypeName listOfTargetClassName = ParameterizedTypeName.get(list, targetClassName);
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder("parserXml")
-                .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(targetClassName)
                 .addParameter(String.class, "source")
                 .addStatement("$T " + RESP + " = null", targetClassName)
@@ -116,8 +115,7 @@ public class BindingNode {
 
         TypeSpec helloWorld = TypeSpec.classBuilder(bindingClassName.simpleName())
                 .addModifiers(Modifier.PUBLIC)
-                .superclass(ParameterizedTypeName.get(ABS_XML_PARSER,
-                        targetClassName))
+                .superclass(ABS_XML_PARSER)
                 .addMethod(parserXml)
                 .addMethod(parserXml())
                 .build();
@@ -160,10 +158,7 @@ public class BindingNode {
                 String tName = binding.element.asType().toString();
                 builder.addStatement(RESP + "." + binding.field + " = new $T()", ClassName.bestGuess(tName));
                 String field = RESP + "." + binding.field;
-
-                ClassName bindingName = ClassName.bestGuess(tName + ParseHelper.BINDING_CLASS_SUFFIX);
-                builder.addStatement("$T bindingData = new $T()", bindingName, bindingName);
-                builder.addCode("bindingData.parserXml(" + field + ", parser, name);");
+                builder.addCode("$T.parserXml(" + field + ", parser, name);", ClassName.bestGuess(tName + ParseHelper.BINDING_CLASS_SUFFIX));
             }
         }
 
@@ -186,10 +181,8 @@ public class BindingNode {
             builder.beginControlFlow("if (" + RESP + "." + binding.field + " == null)", TEXT_UTILS, binding.name)
                     .addStatement(RESP + "." + binding.field + " = new $T<>()", arrayList)
                     .endControlFlow();
-
-            ClassName bindingName = ClassName.bestGuess(classNameString + ParseHelper.BINDING_CLASS_SUFFIX);
-            builder.addStatement("$T bindingData = new $T()", bindingName, bindingName);
-            builder.addStatement("bindingData.parserXml(data, parser, name)");
+            builder.addStatement("$T.parserXml(data, parser, name)",
+                    ClassName.bestGuess(classNameString + ParseHelper.BINDING_CLASS_SUFFIX));
             builder.addStatement(RESP + "." + binding.field + ".add(data)");
         }
         if (isStart) {
@@ -211,7 +204,7 @@ public class BindingNode {
                 .build();
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder("parserXml")
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(void.class)
                 .addParameter(resp)
                 .addParameter(parser)

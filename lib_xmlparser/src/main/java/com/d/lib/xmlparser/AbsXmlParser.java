@@ -1,10 +1,12 @@
 package com.d.lib.xmlparser;
 
 /**
- * AbsXmlParser
+ * AbsXmlParser,,
  * Created by D on 2018/3/24.
  */
-public abstract class AbsXmlParser<T> {
+public class AbsXmlParser {
 
-    protected abstract T parserXml(String source);
+    public static Object parserXml(String source) {
+        return null;
+    }
 }
