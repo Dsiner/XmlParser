@@ -1,8 +1,9 @@
-package com.d.xmlparser.model.bean;
+package com.d.xmlparser.model;
 
 import com.d.lib.xmlparser.annotations.Element;
 import com.d.lib.xmlparser.annotations.ElementList;
 import com.d.lib.xmlparser.annotations.Root;
+import com.d.xmlparser.model.Model;
 
 import java.util.List;
 

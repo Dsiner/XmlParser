@@ -4,17 +4,18 @@ sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.truth:truth:0.39'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':lib_xmlparser_annotations')
+
     api 'com.google.auto:auto-common:0.10'
     api 'com.google.guava:guava:24.0-jre'
     api 'com.squareup:javapoet:1.10.0'
     compileOnly 'com.google.auto.service:auto-service:1.0-rc4'
 }
 
-//替换编码方式，否则编译可能有中文乱码
 tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
     options.encoding = "UTF-8"
 }

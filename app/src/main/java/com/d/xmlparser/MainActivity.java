@@ -6,25 +6,33 @@ import android.util.Log;
 import android.view.View;
 
 import com.d.lib.xmlparser.XmlParser;
-import com.d.xmlparser.model.bean.Resp;
+import com.d.xmlparser.model.Resp;
 
-public class MainActivity extends AppCompatActivity {
-    private final String xmlResp = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><resp><code>35</code><desc>xml parser test</desc></resp>";
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private final String mXmlResp = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><resp><code>35</code><desc>xml parser test</desc></resp>";
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_parse:
+                parse();
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test();
-            }
-        });
+        bindView();
     }
 
-    private void test() {
-        Resp resp = XmlParser.parserInvoke(Resp.class, xmlResp);
-        Log.d("dsiner", "---------");
+    private void bindView() {
+        findViewById(R.id.btn_parse).setOnClickListener(this);
+    }
+
+    private void parse() {
+        Resp resp = XmlParser.parserInvoke(Resp.class, mXmlResp);
+        Log.d("dsiner", "parse result: " + resp.toString());
     }
 }

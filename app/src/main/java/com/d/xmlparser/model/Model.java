@@ -1,4 +1,4 @@
-package com.d.xmlparser.model.bean;
+package com.d.xmlparser.model;
 
 import com.d.lib.xmlparser.annotations.Element;
 
